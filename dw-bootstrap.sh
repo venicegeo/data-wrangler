@@ -3,7 +3,6 @@ sudo mkdir -p /config/mongo
 
 sudo chown -R vagrant:vagrant /config
 sudo cp -R /vagrant/datawrangler /config
-sudo cp -R /vagrant/DataSources /config/datawrangler/DataSources
 sudo chown -R vagrant:vagrant /config/datawrangler
 sudo chmod 755 /config/datawrangler/DataSources
 
@@ -56,8 +55,7 @@ sudo pip install unicodecsv
 
 # setup geoserver
 sudo yum install tomcat -y
-sudo yum install unzip -y		
-sudo yum install maven -y
+sudo yum install unzip -y
 wget -O /config/geoserver.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/2.8.1/geoserver-2.8.1-war.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fgeoserver%2Ffiles%2FGeoServer%2F2.8.1%2F&ts=1451930791&use_mirror=skylineservers	
 wget -O /config/importer.zip http://downloads.sourceforge.net/project/geoserver/GeoServer/2.8.1/extensions/geoserver-2.8.1-importer-plugin.zip?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fgeoserver%2Ffiles%2FGeoServer%2F2.8.1%2Fextensions%2F&ts=1451920154&use_mirror=iweb
 wait
@@ -65,19 +63,12 @@ unzip /config/geoserver.zip -d /config/geoserver
 unzip /config/importer.zip -d /config/importer 
 sudo mv /config/geoserver/geoserver.war /usr/share/tomcat/webapps/
 sudo /bin/systemctl restart tomcat.service
-sudo wget -o /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/mongo-java-driver-2.14.0.jar http://central.maven.org/maven2/org/mongodb/mongo-java-driver/2.14.0/mongo-java-driver-2.14.0.jar
-sudo wget -o /config/master.zip https://github.com/boundlessgeo/geoserver-exts/archive/master.zip
-wait
 sudo rm -rf /config/geoserver
 sudo rm -rf /config/geoserver.zip
 sudo mv -f /config/importer/* /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/ 
 sudo rm -rf /config/importer
 sudo rm -rf /config/importer.zip
-sudo unzip /config/master.zip -d /config/master
-sudo -u root bash -c "cd /config/master/geoserver-exts-master/mongodb ; mvn install"
-sudo mv -f /config/master/geoserver-exts-master/mongodb/target/gs-mongodb-2.8-SNAPSHOT.jar /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/ 
-sudo mv -f /config/master/geoserver-exts-master/mongodb/target/dependency/* /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/ 
-sudo chown tomcat:tomcat /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/* 
+sudo chown tomcat:tomcat /usr/share/tomcat/webapps/geoserver/WEB-INF/lib/
 
 sudo /bin/systemctl restart tomcat.service
 sudo /bin/systemctl enable tomcat.service
